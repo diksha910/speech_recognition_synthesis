@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition and Synthesis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+            background-image: url("background1.jpg");
+            background-size: cover;
+            background-blend-mode: darken;
+            background-repeat: repeat-x;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #story {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        #title1 {
+
+            font-size: 35px;
+            font-weight: bold;
+            text-align: center;
+            padding-top: 10%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        
+        }
+
+        .answer {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #response1, #response2 {
+            color: #007BFF;
+        }
+
+        #question1, #question2 {
+            padding-top: 5%;
+        }
+
+        #logo {
+            padding: 2%;
+            size-adjust: 2%;
+            float: left;
+            background-color: azure;
+            display: flex;
+            border-radius: 50%;
+        
+        }
+
+        #logo:hover{
+            background-color: #d1c593;
+        }
+
+
+        #text1 {
+            
+            font-size: 50px;
+            padding-top: 3%;
+            padding-left: 15%;
+            justify-content: center;
+            flex-basis: 2%;
+            color: #af9b4a;
+            text-decoration: dotted;
+            text-decoration-line: underline;
+        }
+
+       
+
+    </style>
+</head>
+<body>
+    <section id="background"></section>
+    <nav id="logo"> <a href="https://anandasagara.org/"> <img src="logo.png" alt="logo of ananda sagara" width="100"
+        height="100" > </a>
+    </nav>
+    <div id="text1">Ananda Sagara</div>
+    <p id="title1">Story</p>
+    <p id="story">A rabbit is eating a carrot that is fresh from the garden and orange in color.</p>
+    <p id="question1">Who is eating a carrot?</p>
+    <button onclick="askQuestion('Who is eating a carrot?', 'response1')">Ask</button>
+    <p id="answer1" class="answer">Answer: <span id="response1"></span></p>
+
+    <p id="question2">What is the rabbit eating?</p>
+    <button onclick="askQuestion('What is the rabbit eating?', 'response2')">Ask</button>
+    <p id="answer2" class="answer">Answer: <span id="response2"></span></p>
+
+    <script>
+        // Function to speak a given text
+        function speak(text) {
+            const synth = window.speechSynthesis;
+            const utterThis = new SpeechSynthesisUtterance(text);
+            synth.speak(utterThis);
+        }
+
+        // Function to ask a question and handle speech recognition
+        function askQuestion(question, responseElementId) {
+            speak(question);
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const response = event.results[0][0].transcript;
+                document.getElementById(responseElementId).innerText = response;
+            };
+
+            recognition.onerror = function(event) {
+                console.error(event.error);
+            };
+        }
+
+        // Narrate the story
+        speak(document.getElementById('story').innerText);
+
+    </script>
+</body>
+</html>
